@@ -1,0 +1,25 @@
+var Person = require('../models/person.js');
+
+var indexController = {
+	index: function(req, res) {
+		Person.find({}, function(err, documents){
+			res.render('index', {characters : documents});
+		});
+	},
+	createHero : function(req, res) {
+		var hero = {
+			name : req.body.name,
+			costume : req.body.costume,
+			catchPhrase : req.body.catchPhrase,
+			powers : req.body.powers.split(', ')
+		}
+		//creates new instance
+		var newHero = new Person('person', hero);
+		//save to DB
+		newHero.save(function(err, doc){
+			res.redirect('/');
+		});
+	}
+}
+
+module.exports = indexController;
